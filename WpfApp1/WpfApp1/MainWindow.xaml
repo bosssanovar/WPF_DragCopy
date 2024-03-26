@@ -9,6 +9,9 @@
     <Grid>
         <DataGrid x:Name="MyGrid" HorizontalAlignment="Left" Height="276" Margin="18,21,0,0"
                   VerticalAlignment="Top" Width="466" SelectionUnit="Cell"
-                  SelectedCellsChanged="SelectionChanged"/>
+                  SelectedCellsChanged="SelectionChanged"
+                  PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
+                  PreviewMouseMove="MyGrid_PreviewMouseMove"
+                  PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"/>
     </Grid>
 </Window>

@@ -39,6 +39,9 @@ namespace WpfApp1
         // somewhere to hold the selected cells
         IList<DataGridCellInfo> DataGridSelectedCells { get; set; }
 
+        private bool isRowDragging;
+        private MyItems draggedItem;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -46,6 +49,42 @@ namespace WpfApp1
 
             DataList = new List<MyItems>()
                 {
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
+                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
+                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
+                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
+                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
                     new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
                     new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
                     new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
@@ -88,6 +127,47 @@ namespace WpfApp1
                     }
                 }
             }
+        }
+
+        private void MyGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            isRowDragging = true;
+            //クリック位置取得
+            var row = FindVisualParent<DataGridRow>(e.OriginalSource as DependencyObject);
+            if (row != null)
+            {
+                draggedItem = row.Item as MyItems;
+            }
+        }
+
+        private void MyGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (isRowDragging && e.LeftButton == MouseButtonState.Pressed)
+            {
+                Cursor = Cursors.Hand;
+            }
+        }
+
+        private T FindVisualParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            if (parentObject == null) return null;
+
+            if (parentObject is T parent)
+            {
+                return parent;
+            }
+            else
+            {
+                return FindVisualParent<T>(parentObject);
+            }
+        }
+
+        private void MyGrid_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Cursor = null;
+            isRowDragging = false;
         }
     }
 }
