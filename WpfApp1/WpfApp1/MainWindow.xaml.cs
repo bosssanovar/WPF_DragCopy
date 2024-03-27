@@ -58,11 +58,8 @@ namespace WpfApp1
         // create a source for the datagrid
         public List<MyItems> DataList { get; set; }
 
-        // somewhere to hold the selected cells
-        IList<DataGridCellInfo> DataGridSelectedCells { get; set; }
-
         private bool isRowDragging;
-        private MyItems draggedItem;
+        private MyItems copySourceItem;
 
         public MainWindow()
         {
@@ -78,34 +75,13 @@ namespace WpfApp1
 
         private void SelectionChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            DataGridSelectedCells = MyGrid.SelectedCells;
+            var items = MyGrid.SelectedCells;
 
-            var firstCell = DataGridSelectedCells[0].Column.GetCellContent(DataGridSelectedCells[0].Item);
-
-            Type content;
-            if (firstCell != null)
-            {  // if it's not null try to get the content
-                DataGridCell dc = (DataGridCell)firstCell.Parent;
-                if (dc.Content is ComboBox cb)
+            foreach(var item in items)
+            {
+                if(item.Item is MyItems myItem)
                 {
-                    content = (Type)cb.SelectedValue;
-
-                    // Check your key here (Ctrl D, Ctrl R etc)                  
-                    // then loop around your data looking at what is selected
-                    // chosing the direction based on what key was pressed       
-                    foreach (DataGridCellInfo d in DataGridSelectedCells)
-                    {   // get the content of the cell           
-                        var cellContent = d.Column.GetCellContent(d.Item);
-                        if (cellContent != null)
-                        {  // if it's not null try to get the content
-                            DataGridCell dc2 = (DataGridCell)cellContent.Parent;
-
-                            if (dc2.Content is ComboBox cb2)
-                            {
-                                cb2.SelectedValue = content;
-                            }
-                        }
-                    }
+                    myItem.Col2.Value = copySourceItem.Col2.Value;
                 }
             }
         }
@@ -117,7 +93,7 @@ namespace WpfApp1
             var row = FindVisualParent<DataGridRow>(e.OriginalSource as DependencyObject);
             if (row != null)
             {
-                draggedItem = row.Item as MyItems;
+                copySourceItem = row.Item as MyItems;
             }
         }
 
