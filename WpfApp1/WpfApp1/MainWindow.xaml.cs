@@ -31,6 +31,7 @@ namespace WpfApp1
         public ReadOnlyReactivePropertySlim<string?> Col2Disp { get; }
         public ReactivePropertySlim<int> Col3 { get; } = new(0);
         public ReactivePropertySlim<int> Col4 { get; } = new(0);
+        public ReactivePropertySlim<bool> Col5 { get; } = new(false);
 
         public Dictionary<Type, string> TypeList { get; set; }
 
@@ -200,6 +201,12 @@ namespace WpfApp1
             TextBox textBox = sender as TextBox;
             textBox.Focus();
             textBox.SelectAll();
+        }
+
+        private void CheckBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            checkBox.IsChecked = !checkBox.IsChecked;
         }
     }
 }
