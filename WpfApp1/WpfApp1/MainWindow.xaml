@@ -15,7 +15,9 @@
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
                   PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
                   PreviewMouseMove="MyGrid_PreviewMouseMove"
-                  PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp">
+                  PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"
+                  PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown"
+                  DataGridCell.Selected="MyGrid_Selected">
             <DataGrid.Columns>
                 
                 <DataGridTemplateColumn>
@@ -49,7 +51,8 @@
                         <DataTemplate>
                             <ComboBox SelectedValue="{Binding Col2.Value, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding TypeList}"
-                                      SelectedValuePath="Key" DisplayMemberPath="Value"/>
+                                      SelectedValuePath="Key" DisplayMemberPath="Value"
+                                      Loaded="ComboBox_Loaded" DropDownClosed="ComboBox_DropDownClosed"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>

@@ -164,5 +164,35 @@ namespace WpfApp1
             isRowDragging = false;
             copySourceItem = null;
         }
+
+        private void MyGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void MyGrid_Selected(object sender, RoutedEventArgs e)
+        {
+            // Lookup for the source to be DataGridCell
+            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+            {
+                // Starts the Edit on the row;
+                DataGrid grd = (DataGrid)sender;
+                grd.BeginEdit(e);
+            }
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                ComboBox cmb = sender as ComboBox;
+                cmb.IsDropDownOpen = true;
+            }
+        }
+
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            MyGrid.CommitEdit();
+        }
     }
 }
