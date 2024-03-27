@@ -21,7 +21,7 @@
         <TextBlock Text="編集操作　効率化版" HorizontalAlignment="Center"/>
 
         <DataGrid Grid.Row="1" x:Name="MyGrid" HorizontalAlignment="Left"
-                  VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
+                  VerticalAlignment="Top" SelectionUnit="CellOrRowHeader" MinColumnWidth="1"
                   SelectedCellsChanged="SelectionChanged"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
@@ -30,9 +30,16 @@
                   PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"
                   PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown"
                   DataGridCell.Selected="MyGrid_Selected">
-            <DataGrid.Columns>
 
-                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Number}"/>
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                      AncestorType={x:Type DataGridRow}}, 
+                                      Path=Item.Number}"/>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            
+            <DataGrid.Columns>
                 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -125,7 +132,7 @@
         <TextBlock Grid.Column="2" Text="編集操作　標準版" HorizontalAlignment="Center"/>
 
         <DataGrid Grid.Row="1" Grid.Column="2" x:Name="MyGrid2" HorizontalAlignment="Left"
-                  VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
+                  VerticalAlignment="Top" SelectionUnit="CellOrRowHeader" MinColumnWidth="1"
                   SelectedCellsChanged="SelectionChanged"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
@@ -133,9 +140,16 @@
                   PreviewMouseMove="MyGrid_PreviewMouseMove"
                   PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"
                   PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown">
+            
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                      AncestorType={x:Type DataGridRow}}, 
+                                      Path=Item.Number}"/>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            
             <DataGrid.Columns>
-
-                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Number}"/>
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
