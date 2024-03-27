@@ -9,10 +9,10 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="MyGrid" HorizontalAlignment="Left" Height="276" Margin="18,21,0,0"
-                  VerticalAlignment="Top" Width="466" SelectionUnit="Cell"
+                  VerticalAlignment="Top" Width="466" SelectionUnit="Cell" MinColumnWidth="1"
                   SelectedCellsChanged="SelectionChanged"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding DataList}"
+                  ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
                   PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
                   PreviewMouseMove="MyGrid_PreviewMouseMove"
                   PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp">
@@ -21,7 +21,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Col1.Value}"/>
+                            <TextBlock Text="{Binding Col1.Value}" Margin="10,3"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -40,7 +40,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Col2Disp.Value}"/>
+                                <TextBlock Text="{Binding Col2Disp.Value}" Margin="10,3"/>
                                 <TextBlock Grid.Column="2" Margin="5,0,0,0" Text="v"/>
                             </Grid>
                         </DataTemplate>
@@ -53,11 +53,19 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Col3.Value}"/>
+                            <TextBlock Text="■" VerticalAlignment="Bottom" FontSize="5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Col3.Value}" Margin="10,3"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -70,7 +78,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Col4.Value}"/>
+                            <TextBlock Text="{Binding Col4.Value}" Margin="10,3"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>

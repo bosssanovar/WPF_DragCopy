@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -59,7 +60,7 @@ namespace WpfApp1
         public List<MyItems> DataList { get; set; }
 
         private bool isRowDragging;
-        private MyItems copySourceItem;
+        private MyItems? copySourceItem;
 
         public MainWindow()
         {
@@ -75,33 +76,69 @@ namespace WpfApp1
 
         private void SelectionChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            var items = MyGrid.SelectedCells;
-
-            foreach(var item in items)
+            if (copySourceItem is not null)
             {
-                if(item.Item is MyItems myItem)
+                var items = MyGrid.SelectedCells;
+
+                foreach (var item in items)
                 {
-                    myItem.Col2.Value = copySourceItem.Col2.Value;
+                    if (item.Item is MyItems myItem)
+                    {
+                        myItem.Col2.Value = copySourceItem.Col2.Value;
+                    }
                 }
             }
         }
 
         private void MyGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            isRowDragging = true;
-            //クリック位置取得
-            var row = FindVisualParent<DataGridRow>(e.OriginalSource as DependencyObject);
-            if (row != null)
+
+            var point = e.GetPosition(MyGrid);
+            var cell = GetDataGridCell<DataGridCell>(MyGrid, point);
+            if (cell != null)
             {
-                copySourceItem = row.Item as MyItems;
+                var columnIndex = cell.Column.DisplayIndex;
+
+                if (columnIndex == 2)
+                {
+                    Cursor = Cursors.Hand;
+
+                    isRowDragging = true;
+                    //クリック位置取得
+                    var row = FindVisualParent<DataGridRow>(e.OriginalSource as DependencyObject);
+                    if (row != null)
+                    {
+                        copySourceItem = row.Item as MyItems;
+                    }
+                }
             }
         }
+
+        private T GetDataGridCell<T>(DataGrid dataGrid, Point point)
+        {
+            T result = default(T);
+            var hitResultTest = VisualTreeHelper.HitTest(dataGrid, point);
+            if (hitResultTest != null)
+            {
+                var visualHit = hitResultTest.VisualHit;
+                while (visualHit != null)
+                {
+                    if (visualHit is T)
+                    {
+                        result = (T)(object)visualHit;
+                        break;
+                    }
+                    visualHit = VisualTreeHelper.GetParent(visualHit);
+                }
+            }
+            return result;
+        }
+
 
         private void MyGrid_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (isRowDragging && e.LeftButton == MouseButtonState.Pressed)
             {
-                Cursor = Cursors.Hand;
             }
         }
 
@@ -125,6 +162,7 @@ namespace WpfApp1
         {
             Cursor = null;
             isRowDragging = false;
+            copySourceItem = null;
         }
     }
 }
