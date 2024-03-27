@@ -194,5 +194,12 @@ namespace WpfApp1
         {
             MyGrid.CommitEdit();
         }
+
+        private void TextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            textBox.Focus();
+            textBox.SelectAll();
+        }
     }
 }
