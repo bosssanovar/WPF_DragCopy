@@ -22,7 +22,7 @@
 
         <DataGrid Grid.Row="1" x:Name="MyGrid" HorizontalAlignment="Left"
                   VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
-                  SelectedCellsChanged="SelectionChanged" SelectionMode="Single"
+                  SelectedCellsChanged="SelectionChanged"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
                   PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
@@ -32,6 +32,8 @@
                   DataGridCell.Selected="MyGrid_Selected">
             <DataGrid.Columns>
 
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Number}"/>
+                
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -124,7 +126,7 @@
 
         <DataGrid Grid.Row="1" Grid.Column="2" x:Name="MyGrid2" HorizontalAlignment="Left"
                   VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
-                  SelectedCellsChanged="SelectionChanged" SelectionMode="Single"
+                  SelectedCellsChanged="SelectionChanged"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
                   PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
@@ -132,6 +134,8 @@
                   PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"
                   PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown">
             <DataGrid.Columns>
+
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Number}"/>
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

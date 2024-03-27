@@ -1,6 +1,7 @@
 ﻿using Reactive.Bindings;
 
 using System.Diagnostics;
+using System.Dynamic;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace WpfApp1
 
     public class MyItems
     {
+        public int Number { get; init; }
         public ReactivePropertySlim<int> Col1 { get; } = new(0);
         public ReactivePropertySlim<Type> Col2 { get; } = new(Type.Type1);
         public ReadOnlyReactivePropertySlim<string?> Col2Disp { get; }
@@ -69,7 +71,7 @@ namespace WpfApp1
             DataList = new List<MyItems>();
             for(int index = 0; index < 30; index++)
             {
-                DataList.Add(new());
+                DataList.Add(new() { Number = index + 1 });
             }
 
             InitializeComponent();
@@ -173,7 +175,44 @@ namespace WpfApp1
 
         private void MyGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null) return;
 
+            var selectedCells = dataGrid.SelectedCells;
+            int startIndex = DataGridRow.GetRowContainingElement(GetCell(selectedCells[0])).GetIndex();
+            int endIndex = DataGridRow.GetRowContainingElement(GetCell(selectedCells[selectedCells.Count-1])).GetIndex();
+
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem menuItem = new MenuItem();
+            menuItem.Header = $"{startIndex+1}～{endIndex+1}行目の＊＊＊＊を設定する...";
+            menuItem.Click += new RoutedEventHandler(ShowSettingDialog);
+            contextMenu.Items.Add(menuItem);
+
+            contextMenu.IsOpen = true;
+        }
+
+        private static DataGridCell? GetCell(DataGridCellInfo info)
+        {
+            FrameworkElement cellElement = info.Column.GetCellContent(info.Item);
+            if (cellElement != null)
+            {
+                //DataGridTextColumnの場合はSystem.Windows.Controls.TextBlockが取得される。
+                //dataGridCell.Content = TextBlock
+                //dataGridCell.DataContent = Bindingされたデータインスタンス
+                var dataGridCell = cellElement.Parent as DataGridCell;
+
+                return dataGridCell;
+            }
+
+            return null;
+        }
+
+        private void ShowSettingDialog(object sender, RoutedEventArgs e)
+        {
+            var setting = new Setting();
+            setting.Owner = this;
+            setting.ShowDialog();
         }
 
         private void MyGrid_Selected(object sender, RoutedEventArgs e)
