@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Reactive.Bindings;
+
+using System.Diagnostics;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,10 +25,29 @@ namespace WpfApp1
 
     public class MyItems
     {
-        public int Col1 { get; set; }
-        public Type Col2 { get; set; }
-        public int Col3 { get; set; }
-        public int Col4 { get; set; }
+        public ReactivePropertySlim<int> Col1 { get; } = new(0);
+        public ReactivePropertySlim<Type> Col2 { get; } = new(Type.Type1);
+        public ReadOnlyReactivePropertySlim<string?> Col2Disp { get; }
+        public ReactivePropertySlim<int> Col3 { get; } = new(0);
+        public ReactivePropertySlim<int> Col4 { get; } = new(0);
+
+        public Dictionary<Type, string> TypeList { get; set; }
+
+        public MyItems()
+        {
+
+            TypeList = new()
+            {
+                { Type.Type1, "Type 1" },
+                { Type.Type2, "Type 2" },
+                { Type.Type3, "Type 3" },
+                { Type.Type4, "Type 4" },
+            };
+
+            Col2Disp =
+                Col2.Select(x => TypeList[x])
+                .ToReadOnlyReactivePropertySlim();
+        }
     }
 
     /// <summary>
@@ -44,55 +66,14 @@ namespace WpfApp1
 
         public MainWindow()
         {
+
+            DataList = new List<MyItems>();
+            for(int index = 0; index < 30; index++)
+            {
+                DataList.Add(new());
+            }
+
             InitializeComponent();
-            DataContext = this;
-
-            DataList = new List<MyItems>()
-                {
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                    new MyItems() { Col1=1, Col2=Type.Type2, Col3=3, Col4=4},
-                    new MyItems() { Col1=5, Col2=Type.Type4, Col3=7, Col4=8},
-                    new MyItems() { Col1=9, Col2=Type.Type1, Col3=11, Col4=12},
-                    new MyItems() { Col1=13, Col2=Type.Type3, Col3=15, Col4=16},
-                };
-
-            MyGrid.ItemsSource = DataList;
-
         }
 
         private void SelectionChanged(object sender, SelectedCellsChangedEventArgs e)
