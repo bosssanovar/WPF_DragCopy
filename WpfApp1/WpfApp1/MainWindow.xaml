@@ -7,10 +7,22 @@
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="MyGrid" HorizontalAlignment="Left" Height="276" Margin="18,21,0,0"
-                  VerticalAlignment="Top" Width="466" SelectionUnit="Cell" MinColumnWidth="1"
-                  SelectedCellsChanged="SelectionChanged"
+    <Grid Margin="5" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="編集操作　効率化版" HorizontalAlignment="Center"/>
+
+        <DataGrid Grid.Row="1" x:Name="MyGrid" HorizontalAlignment="Left"
+                  VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
+                  SelectedCellsChanged="SelectionChanged" SelectionMode="Single"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
                   PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
@@ -19,7 +31,7 @@
                   PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown"
                   DataGridCell.Selected="MyGrid_Selected">
             <DataGrid.Columns>
-                
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -32,7 +44,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -77,7 +89,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -95,6 +107,106 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Col5.Value}" Margin="10,3"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Col5.Value, UpdateSourceTrigger=PropertyChanged}" Margin="10,3"
+                                      Loaded="CheckBox_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Column="2" Text="編集操作　標準版" HorizontalAlignment="Center"/>
+
+        <DataGrid Grid.Row="1" Grid.Column="2" x:Name="MyGrid2" HorizontalAlignment="Left"
+                  VerticalAlignment="Top" SelectionUnit="Cell" MinColumnWidth="1"
+                  SelectedCellsChanged="SelectionChanged" SelectionMode="Single"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding DataList}" d:ItemsSource="{d:SampleData ItemCount=20}"
+                  PreviewMouseLeftButtonDown="MyGrid_PreviewMouseLeftButtonDown"
+                  PreviewMouseMove="MyGrid_PreviewMouseMove"
+                  PreviewMouseLeftButtonUp="MyGrid_PreviewMouseLeftButtonUp"
+                  PreviewMouseRightButtonDown="MyGrid_PreviewMouseRightButtonDown">
+            <DataGrid.Columns>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Col1.Value}" Margin="10,3"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Col1.Value}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Col2Disp.Value}" Margin="10,3"/>
+                                <TextBlock Grid.Column="2" Margin="5,0,0,0" Text="v"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Col2.Value, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding TypeList}"
+                                      SelectedValuePath="Key" DisplayMemberPath="Value"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="■" VerticalAlignment="Bottom" FontSize="5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Col3.Value}" Margin="10,3"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Col3.Value}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Col4.Value}" Margin="10,3"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Col4.Value}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsHitTestVisible="False" IsChecked="{Binding Col5.Value}" Margin="10,3"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>

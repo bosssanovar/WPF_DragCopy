@@ -40,10 +40,10 @@ namespace WpfApp1
 
             TypeList = new()
             {
-                { Type.Type1, "Type 1" },
-                { Type.Type2, "Type 2" },
-                { Type.Type3, "Type 3" },
-                { Type.Type4, "Type 4" },
+                { Type.Type1, "AAAAAAAAAA" },
+                { Type.Type2, "BBBBBBB" },
+                { Type.Type3, "CCCC" },
+                { Type.Type4, "D" },
             };
 
             Col2Disp =
@@ -77,9 +77,12 @@ namespace WpfApp1
 
         private void SelectionChanged(object sender, SelectedCellsChangedEventArgs e)
         {
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null) return;
+
             if (copySourceItem is not null)
             {
-                var items = MyGrid.SelectedCells;
+                var items = dataGrid.SelectedCells;
 
                 foreach (var item in items)
                 {
@@ -93,9 +96,11 @@ namespace WpfApp1
 
         private void MyGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null) return;
 
-            var point = e.GetPosition(MyGrid);
-            var cell = GetDataGridCell<DataGridCell>(MyGrid, point);
+            var point = e.GetPosition(dataGrid);
+            var cell = GetDataGridCell<DataGridCell>(dataGrid, point);
             if (cell != null)
             {
                 var columnIndex = cell.Column.DisplayIndex;
